@@ -1,7 +1,11 @@
 from confluent_kafka import Consumer, KafkaError
+import json
 
 from crear_topic import crearTopic
 from config import TOPIC
+from conexion import ConexionMongo
+
+con=ConexionMongo()
 
 crearTopic(TOPIC)
 
@@ -32,3 +36,5 @@ while True:
 			break
 
 	print(mensaje.value().decode("utf-8"))
+
+	con.tabla.insert_one(json.loads(mensaje.value().decode("utf-8")))

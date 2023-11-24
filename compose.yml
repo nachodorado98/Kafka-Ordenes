@@ -41,6 +41,19 @@ services:
     networks:
       - my_network
 
+  mongo:
+    build: ./mongo
+    container_name: mongo
+    ports:
+     - "27017:27017"
+    volumes:
+      - ./mongo/datos_mongo:/data/db
+    networks:
+      - my_network
+    depends_on:
+      - zoo1
+      - kafka1
+
   python:
     build: ./python
     container_name: python
@@ -51,6 +64,7 @@ services:
     depends_on:
       - zoo1
       - kafka1
+      - mongo
 
 networks:
   my_network:
